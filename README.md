@@ -679,8 +679,57 @@ That's it! You've successfully installed and set up Grafana to work with Prometh
 
 **Phase 5: Notification**
 
+Go to google account and enable 2FA
+
+search for "app passwords"
+type Netflix and copy the code and save it to Jenkins Credentials.
+
+follow the video
+
 1. **Implement Notification Services:**
     - Set up email notifications in Jenkins or other notification mechanisms.
+
+Goto System and search for Email notifications
+type smtp.gmail.com in smtp and email in suffix, chose authentication type as SSL  and SMTP.
+SMTP Port 465
+
+search extended email notifications in system, select SSL
+select HTML
+ for triggers
+Always, Failures.
+
+Add section in pipeline to send notifications
+
+post {
+        always {
+            emailext attachLog: true,
+                subject: "${currentBuild.result}",
+                body: "Project: ${env.JOB_NAME}<br/>" + 
+                    "Build Number: ${env.BUILD_NUMBER}<br/>"+
+                    "URL: ${env.BUILD_URL}<br/>",
+                to: 'sarwesh20rshenvi@gmail.com',
+                attachmentsPattern: 'trivyfs.txe, trivyimage.txt'
+        }
+    }
+
+chat gpt code
+emailext(
+    attachLog: true,
+    subject: "${currentBuild.result}",
+    body: """
+        Project: ${env.JOB_NAME}<br/>
+        Build Number: ${env.BUILD_NUMBER}<br/>
+        URL: ${env.BUILD_URL}<br/>
+    """,
+    to: 'sarwesh20rshenvi@gmail.com',
+    attachmentsPattern: 'trivyfs.txt, trivyimage.txt'
+)
+
+
+add the following code
+
+
+
 
 # Phase 6: Kubernetes
 
